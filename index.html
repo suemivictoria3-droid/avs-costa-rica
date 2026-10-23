@@ -115,6 +115,8 @@ const IS_IOS=/iPad|iPhone|iPod/.test(UA)||(navigator.platform==="MacIntel"&&navi
 const IS_ANDROID=/Android/i.test(UA);
 const IN_APP=/FBAN|FBAV|Instagram|Line\/|MicroMessenger/i.test(UA);
 const isMobile=()=>window.innerWidth<=640;
+const IN_IFRAME=(()=>{try{return window.self!==window.top;}catch(e){return true;}})();
+const HOST_HINT=/sharepoint\.com|-my\.sharepoint|officeapps\.live|1drv\.ms|onedrive/i.test(location.href)?"SharePoint/OneDrive":IN_IFRAME?"un visor embebido":"";
 
 /* ═════════ ALMACENAMIENTO LOCAL SEGURO ═════════ */
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
@@ -136,7 +138,7 @@ function getZona(s){if(s===null||s===undefined||s==="")return null;if(s>=80)retu
 function zdOf(s){const z=getZona(s);return z?ZONAS[z]:{hex:TDIM,bg:BDL,label:"Sin evaluar",cond:"Sin evaluar"};}
 
 /* ═════════ CATÁLOGO DE SITIOS ═════════ */
-const SITIOS_CAT={"CADI ALAJUELA":{"tipo":"CADI","unidad":"Operaciones Costa Rica","region":"Alajuela","canton":"ALAJUELA","distrito":"SAN ANTONIO","lat":9.994339,"lng":-84.233554,"direccion":"San Antonio, Provincia de Alajuela, Costa Rica"},"PLANTA ALAJUELA":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Alajuela","canton":"ALAJUELA","distrito":"SAN ANTONIO","lat":9.994339,"lng":-84.233554,"direccion":"San Antonio, Provincia de Alajuela, Costa Rica"},"CADI EL COYOL":{"tipo":"CADI","unidad":"Operaciones Costa Rica","region":"Alajuela","canton":"ALAJUELA","distrito":"POR VALIDAR","lat":9.9932232,"lng":-84.2830963,"direccion":"C. Bosque Encantado, Provincia de Alajuela, Alajuela, Costa Rica"},"PLANTA CARTAGO LEKKERLAND":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Cartago","canton":"OREAMUNO","distrito":"POR VALIDAR","lat":9.8911552,"lng":-83.8850676,"direccion":"Oreamuno, Provincia de Cartago, Costa Rica"},"PLANTA CARTAGO QUESOS":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Cartago","canton":"OREAMUNO","distrito":"POR VALIDAR","lat":9.8911552,"lng":-83.8850676,"direccion":"Oreamuno, Provincia de Cartago, Costa Rica"},"PLANTA CARTAGO YOGHURT":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Cartago","canton":"OREAMUNO","distrito":"POR VALIDAR","lat":9.888994,"lng":-83.889363,"direccion":"Oreamuno, Provincia de Cartago, Costa Rica"},"CEDI GUAPILES":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Limón","canton":"POCOCI","distrito":"GUAPILES","lat":10.218105,"lng":-83.78907,"direccion":"Av. 13, Limón, Guápiles, Costa Rica"},"CEDI LIBERIA":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Guanacaste","canton":"LIBERIA","distrito":"LIBERIA","lat":10.5895111,"lng":-85.5337994,"direccion":"Liberia, Provincia de Guanacaste, Costa Rica"},"CEDI LIMON":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Limón","canton":"LIMON","distrito":"LIMON","lat":9.979803,"lng":-83.049964,"direccion":"Limón, Costa Rica"},"PLANTA MONTEVERDE":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Puntarenas","canton":"MONTEVERDE","distrito":"MONTEVERDE","lat":10.305106,"lng":-84.80932,"direccion":"Monteverde, Provincia de Puntarenas, Costa Rica"},"CEDI PEREZ ZELEDON":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"San José","canton":"PEREZ ZELEDON","distrito":"POR VALIDAR","lat":9.307787,"lng":-83.660038,"direccion":"Carr. Interamericana Sur, San José, Pérez Zeledón, Costa Rica"},"CEDI PUNTA ARENAS":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Puntarenas","canton":"PUNTARENAS","distrito":"EL ROBLE","lat":9.987354,"lng":-84.736856,"direccion":"El Roble, Provincia de Puntarenas, Costa Rica"},"CEDI SAN CARLOS":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Alajuela","canton":"SAN CARLOS","distrito":"QUESADA","lat":10.34485,"lng":-84.433229,"direccion":"Cd Quesada, Provincia de Alajuela, Costa Rica"},"CADI SAN JOSE":{"tipo":"CADI","unidad":"Operaciones Costa Rica","region":"San José","canton":"CURRIDABAT","distrito":"POR VALIDAR","lat":9.9149333,"lng":-84.0486167,"direccion":"Curridabat, San José, Costa Rica"},"CEDI SAN JOSE":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"San José","canton":"CURRIDABAT","distrito":"POR VALIDAR","lat":9.907225,"lng":-84.047413,"direccion":"Curridabat, San José, Costa Rica"}};
+const SITIOS_CAT={"CADI ALAJUELA":{"tipo":"CADI","unidad":"Operaciones Costa Rica","region":"Alajuela","canton":"ALAJUELA","distrito":"SAN ANTONIO","lat":9.994339,"lng":-84.233554,"direccion":"San Antonio, Provincia de Alajuela, Costa Rica"},"PLANTA ALAJUELA":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Alajuela","canton":"ALAJUELA","distrito":"SAN ANTONIO","lat":9.994339,"lng":-84.233554,"direccion":"San Antonio, Provincia de Alajuela, Costa Rica"},"CEDI ALAJUELA":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Alajuela","canton":"ALAJUELA","distrito":"SAN ANTONIO","lat":9.994339,"lng":-84.233554,"direccion":"San Antonio, Provincia de Alajuela, Costa Rica"},"CADI EL COYOL":{"tipo":"CADI","unidad":"Operaciones Costa Rica","region":"Alajuela","canton":"ALAJUELA","distrito":"POR VALIDAR","lat":9.9932232,"lng":-84.2830963,"direccion":"C. Bosque Encantado, Provincia de Alajuela, Alajuela, Costa Rica"},"PLANTA CARTAGO LEKKERLAND":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Cartago","canton":"OREAMUNO","distrito":"POR VALIDAR","lat":9.8911552,"lng":-83.8850676,"direccion":"Oreamuno, Provincia de Cartago, Costa Rica"},"PLANTA CARTAGO QUESOS":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Cartago","canton":"OREAMUNO","distrito":"POR VALIDAR","lat":9.8911552,"lng":-83.8850676,"direccion":"Oreamuno, Provincia de Cartago, Costa Rica"},"PLANTA CARTAGO YOGHURT":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Cartago","canton":"OREAMUNO","distrito":"POR VALIDAR","lat":9.888994,"lng":-83.889363,"direccion":"Oreamuno, Provincia de Cartago, Costa Rica"},"CEDI GUAPILES":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Limón","canton":"POCOCI","distrito":"GUAPILES","lat":10.218105,"lng":-83.78907,"direccion":"Av. 13, Limón, Guápiles, Costa Rica"},"CEDI LIBERIA":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Guanacaste","canton":"LIBERIA","distrito":"LIBERIA","lat":10.5895111,"lng":-85.5337994,"direccion":"Liberia, Provincia de Guanacaste, Costa Rica"},"CEDI LIMON":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Limón","canton":"LIMON","distrito":"LIMON","lat":9.979803,"lng":-83.049964,"direccion":"Limón, Costa Rica"},"PLANTA MONTEVERDE":{"tipo":"Planta","unidad":"Operaciones Costa Rica","region":"Puntarenas","canton":"MONTEVERDE","distrito":"MONTEVERDE","lat":10.305106,"lng":-84.80932,"direccion":"Monteverde, Provincia de Puntarenas, Costa Rica"},"CEDI PEREZ ZELEDON":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"San José","canton":"PEREZ ZELEDON","distrito":"POR VALIDAR","lat":9.307787,"lng":-83.660038,"direccion":"Carr. Interamericana Sur, San José, Pérez Zeledón, Costa Rica"},"CEDI PUNTA ARENAS":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Puntarenas","canton":"PUNTARENAS","distrito":"EL ROBLE","lat":9.987354,"lng":-84.736856,"direccion":"El Roble, Provincia de Puntarenas, Costa Rica"},"CEDI SAN CARLOS":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"Alajuela","canton":"SAN CARLOS","distrito":"QUESADA","lat":10.34485,"lng":-84.433229,"direccion":"Cd Quesada, Provincia de Alajuela, Costa Rica"},"CADI SAN JOSE":{"tipo":"CADI","unidad":"Operaciones Costa Rica","region":"San José","canton":"CURRIDABAT","distrito":"POR VALIDAR","lat":9.9149333,"lng":-84.0486167,"direccion":"Curridabat, San José, Costa Rica"},"CEDI SAN JOSE":{"tipo":"CEDI","unidad":"Operaciones Costa Rica","region":"San José","canton":"CURRIDABAT","distrito":"POR VALIDAR","lat":9.907225,"lng":-84.047413,"direccion":"Curridabat, San José, Costa Rica"}};
 
 /* ═════════ PANORAMA CRIMINOLÓGICO COSTA RICA 2026 (OIJ) ═════════ */
 const PANORAMA={
@@ -330,7 +332,10 @@ function genConcl(rec){
 const ST={view:"dashboard",records:[],current:null,currentId:null,secIdx:0,sbOpen:!isMobile(),admin:ssGet(ADM_KEY)==="1",q:"",sync:"idle",lastSync:null,inAppOk:false};
 function set(p){Object.assign(ST,p);render();}
 const isAdmin=()=>ST.admin;
-const canEdit=r=>ST.admin||(r&&r._owner===DEVICE);
+const myName=()=>(lsGet("sigma_avs_v5_evaluador")||"").trim().toLowerCase();
+const sameEvaluador=r=>{const m=myName();return!!(r&&r.evaluador&&m&&r.evaluador.trim().toLowerCase()===m);};
+const isMine=r=>!!(r&&(r._owner===DEVICE||sameEvaluador(r)));
+const canEdit=()=>true;
 
 /* ═════════ UTILIDADES ═════════ */
 function el(tag,props,...ch){const e=document.createElement(tag);
@@ -462,7 +467,7 @@ function renderDashboard(){
  if(!STORAGE_OK)body.appendChild(el("div",{className:"card",style:{background:"#F9E4E8",borderColor:SR,marginBottom:"12px",fontSize:"12px",color:TMID}},el("b",{style:{color:SR}},"⚠ Este navegador no está guardando los datos correctamente. "),"Tus evaluaciones podrían no quedar guardadas al salir. Evita el modo incógnito/privado y el visor interno de apps (WhatsApp, Teams, SharePoint, OneDrive); abre el archivo directamente en Chrome o Safari. Exporta tu Excel seguido como respaldo."));
  body.appendChild(el("div",{style:{display:"flex",justifyContent:"space-between",alignItems:"center",flexWrap:"wrap",gap:"8px",marginBottom:"12px"}},syncBadge(),el("span",{className:"badge",style:{background:ST.admin?"#F9E4E8":BDL,color:ST.admin?SR:TMUT}},ST.admin?"ADMINISTRADOR":"EVALUADOR · "+DEVICE)));
  const kr=el("div",{style:{display:"flex",gap:"10px",marginBottom:"16px",flexWrap:"wrap"}});
- [["Total instalaciones",recs.length,TXT,SR,"registros"],["Score promedio",avg??"—",avgZ.hex,avgZ.hex,avg!=null?"Zona "+avgZ.label:""],["Zona Rojo",recs.filter(r=>r._zona==="Rojo").length,SDR,SR,"críticos"],["Evaluadas",evald.length,SG,SG,`de ${recs.length}`],["Mis evaluaciones",recs.filter(r=>r._owner===DEVICE).length,TMID,BD,"en este código"]]
+ [["Total instalaciones",recs.length,TXT,SR,"registros"],["Score promedio",avg??"—",avgZ.hex,avgZ.hex,avg!=null?"Zona "+avgZ.label:""],["Zona Rojo",recs.filter(r=>r._zona==="Rojo").length,SDR,SR,"críticos"],["Evaluadas",evald.length,SG,SG,`de ${recs.length}`],["Mis evaluaciones",recs.filter(isMine).length,TMID,BD,"con tu código o tu nombre"]]
   .forEach(([l,v,c,a,s])=>kr.appendChild(el("div",{className:"kpi",style:{borderLeftColor:a}},el("div",{className:"kpi-lbl"},l),el("div",{className:"kpi-val",style:{color:c}},String(v)),el("div",{className:"kpi-sub"},s))));
  body.appendChild(kr);
  const zc=el("div",{className:"card",style:{marginBottom:"16px"}},el("div",{style:{fontSize:"11px",fontWeight:"700",color:TMUT,textTransform:"uppercase",marginBottom:"10px"}},"Distribución por zona colorimétrica"));
@@ -662,16 +667,16 @@ function openDetalle(id){if(ST.records.find(x=>x.id===id))set({view:"detalle",cu
 
 /* ═════════ DETALLE ═════════ */
 function renderDetalle(r){
- const score=r._score,zd=zdOf(score),recs=genRecs(r),pan=getPanorama(r.estado),cors=getCorredores(r.estado),mine=canEdit(r);
+ const score=r._score,zd=zdOf(score),recs=genRecs(r),pan=getPanorama(r.estado),cors=getCorredores(r.estado);
  const w=el("div",{});
  const left=el("div",{style:{display:"flex",alignItems:"center",gap:"8px",minWidth:0}},btn("btn-outline btn-sm","menu","",()=>set({sbOpen:!ST.sbOpen})),btn("btn-outline btn-sm","back","Dashboard",()=>set({view:"dashboard",currentId:null})),el("b",{className:"hide-m",style:{fontSize:"14px"}},r.nombre_sitio||"—"));
  const right=el("div",{style:{display:"flex",gap:"6px",flexWrap:"wrap"}});
  if(ST.admin)right.appendChild(btn("btn-outline btn-sm","trash","Eliminar",()=>deleteRecord(r.id),{style:{color:SDR}}));
- right.appendChild(mine?btn("btn-outline btn-sm","edit","Editar",()=>editRecord(r)):btn("btn-outline btn-sm","lock","Editar",()=>requireAdmin(()=>editRecord(r)),{title:"Solo el autor o un administrador"}));
+ right.appendChild(btn("btn-outline btn-sm","edit","Editar",()=>editRecord(r)));
  right.appendChild(btn("btn-red btn-sm","pdf","PDF / Imprimir",()=>openPDF(r)));
  w.appendChild(topBar(left,right));
  const b=el("div",{className:"scroll"});
- if(!mine)b.appendChild(el("div",{className:"card",style:{background:BDL,marginBottom:"10px",fontSize:"12px",color:TMUT}},"👁 Vista de solo lectura. Esta evaluación pertenece a otro evaluador."));
+ if(!isMine(r))b.appendChild(el("div",{className:"card",style:{background:BDL,marginBottom:"10px",fontSize:"12px",color:TMUT}},"ℹ️ Esta evaluación fue creada por otro evaluador. Puedes editarla; si es un error, pide a un administrador que la elimine."));
  const hero=el("div",{className:"card",style:{marginBottom:"12px",borderLeft:`5px solid ${zd.hex}`,display:"flex",gap:"14px",alignItems:"center",flexWrap:"wrap"}},ring(score,68),
   el("div",{style:{flex:1,minWidth:"180px"}},el("div",{style:{fontSize:"18px",fontWeight:"700"}},r.nombre_sitio||"—"),el("div",{style:{fontSize:"12px",color:TMUT}},[r.municipio,r.estado,r.tipo_sitio,r.unidad_org].filter(Boolean).join(" · ")),
    el("div",{style:{display:"flex",gap:"6px",marginTop:"8px",flexWrap:"wrap"}},zbadge(score),el("span",{className:"badge",style:{background:BDL,color:viabColor(r._viab)}},r._viab||"—"))),
@@ -776,7 +781,38 @@ window.addEventListener("beforeunload",e=>{if(ST.view==="form"){saveDraft();e.pr
 document.addEventListener("visibilitychange",()=>{if(document.hidden)saveDraft();else if(ST.view!=="form")syncRemote(true);});
 setInterval(saveDraft,5000);
 setInterval(()=>{if(!document.hidden&&ST.view!=="form")syncRemote(true);},90000);
-(async function init(){ST.records=(await loadLocal()).sort((a,b)=>(b._ts||0)-(a._ts||0));render();syncRemote(true);})();
+
+/* ═════════ AVISO DE VISOR RESTRINGIDO (SharePoint/OneDrive/Teams) ═════════ */
+function tryEscapeFrame(){
+ try{const w=window.open(location.href,"_blank");if(w){toast("Abriendo en pestaña nueva…",SG);return;}}catch(e){}
+ try{if(window.top&&window.top!==window.self){window.top.location.href=location.href;return;}}catch(e){}
+ toast("No se pudo abrir automáticamente. Descarga el archivo y ábrelo con el botón ⋯ → Abrir en Chrome/Safari.",SO);
+}
+function showHostingWarning(){
+ if(ssGet("avs_hostwarn_dismissed")==="1")return;
+ const ov=el("div",{className:"overlay",style:{zIndex:"20000",background:"rgba(0,0,0,.72)"}});
+ const box=el("div",{style:{background:"#fff",borderRadius:"14px",padding:"26px",maxWidth:"420px",width:"100%",boxShadow:"0 10px 40px rgba(0,0,0,.3)",borderTop:`5px solid ${SR}`}});
+ if(LOGO_SRC)box.appendChild(el("img",{src:LOGO_SRC,alt:"Sigma",style:{height:"28px",marginBottom:"14px"}}));
+ box.appendChild(el("div",{style:{fontSize:"16px",fontWeight:"700",marginBottom:"8px",color:SR}},"⚠ Este visor no permite guardar ni imprimir"));
+ box.appendChild(el("div",{style:{fontSize:"13px",color:TMID,lineHeight:"1.6",marginBottom:"14px"}},
+  `Estás viendo este archivo dentro de ${HOST_HINT||"un visor"} (vista previa). Por seguridad, ese visor bloquea el guardado de evaluaciones, la descarga de PDF/Excel y la impresión — no es un problema del archivo, es una restricción del visor.`));
+ box.appendChild(el("div",{style:{fontSize:"12px",fontWeight:"700",color:TMID,marginBottom:"6px"}},"Para que funcione completo:"));
+ const steps=el("ol",{style:{fontSize:"12px",color:TMID,lineHeight:"1.8",paddingLeft:"18px",marginBottom:"16px"}});
+ ["Descarga el archivo .html a tu celular o computadora (botón de descarga ⬇ de SharePoint/OneDrive, no 'Abrir').","Ábrelo tocando el archivo descargado y elige Chrome (Android) o Safari (iPhone) para abrirlo — no lo abras 'dentro de' Teams/SharePoint.","Repite esto cada vez que lo uses, o guárdalo como acceso directo en tu navegador."]
+  .forEach(s=>steps.appendChild(el("li",{},s)));
+ box.appendChild(steps);
+ box.appendChild(el("div",{style:{display:"flex",gap:"8px",flexWrap:"wrap"}},
+  btn("btn-red btn-sm",null,"Intentar abrir en pestaña nueva",()=>{tryEscapeFrame();}),
+  btn("btn-outline btn-sm",null,"Entendido, continuar aquí",()=>{ssSet("avs_hostwarn_dismissed","1");ov.remove();})));
+ ov.appendChild(box);document.body.appendChild(ov);
+}
+
+(async function init(){
+ ST.records=(await loadLocal()).sort((a,b)=>(b._ts||0)-(a._ts||0));
+ render();
+ if(IN_IFRAME&&!STORAGE_OK)setTimeout(showHostingWarning,400);
+ syncRemote(true);
+})();
 </script>
 </body>
 </html>
